@@ -1,6 +1,6 @@
 {
     "name": "sixtec/monitor",
-    "description": "Agente de monitoramento da Sixtec para apps Laravel: saúde da aplicação e do servidor, enviada ao painel de monitores por um serviço do systemd ou pelo agendador.",
+    "description": "Sixtec monitoring agent for Laravel apps: application and server health, pushed to the Sixtec monitor panel by a systemd service or the scheduler.",
     "type": "library",
     "license": "MIT",
     "keywords": [
