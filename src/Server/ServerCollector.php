@@ -175,8 +175,13 @@ class ServerCollector
                 return [];
             }
 
+            // Alias units (Ubuntu's redis.service → redis-server.service) are
+            // the same service under another name: listing both would report
+            // it twice.
             $existing = collect(explode("\n", $installed->output()))
-                ->map(fn (string $line): string => (string) preg_replace('/\.service$/', '', (string) strtok(trim($line), " \t")))
+                ->map(fn (string $line): array => preg_split('/\s+/', trim($line)) ?: [])
+                ->reject(fn (array $columns): bool => ($columns[1] ?? '') === 'alias')
+                ->map(fn (array $columns): string => (string) preg_replace('/\.service$/', '', $columns[0] ?? ''))
                 ->filter()
                 ->all();
 

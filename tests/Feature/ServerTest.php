@@ -38,7 +38,7 @@ class ServerTest extends TestCase
         $this->app->singleton(ServerCollector::class, fn (): ServerCollector => new ServerCollector($this->root, 0));
 
         Process::fake([
-            '*list-unit-files*' => Process::result("nginx.service enabled enabled\nphp8.4-fpm.service enabled enabled\nssh.service enabled enabled\n"),
+            '*list-unit-files*' => Process::result("nginx.service enabled enabled\nphp8.4-fpm.service enabled enabled\nredis.service alias -\nssh.service enabled enabled\n"),
             '*is-active*' => Process::result("active\nfailed\n", exitCode: 3),
         ]);
     }
@@ -65,6 +65,7 @@ class ServerTest extends TestCase
         $this->assertSame('critical', $components['service_php8_4_fpm']['status']);
         $this->assertSame('Service failed', $components['service_php8_4_fpm']['message']);
         $this->assertFalse($components->has('service_ssh'), 'Only watched services are reported.');
+        $this->assertFalse($components->has('service_redis'), 'Alias units are the same service under another name.');
 
         $this->assertSame('Ubuntu 24.04 LTS', $report['server']['os']);
         $this->assertSame(2, $report['server']['cores']);
