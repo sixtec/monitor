@@ -72,7 +72,7 @@ Everything has a sensible default; the `.env` usually only needs the key.
 | Variable | Default | |
 | --- | --- | --- |
 | `SIXTEC_MONITOR_KEY` | — | Push key from the panel. Without it, nothing is sent. |
-| `SIXTEC_MONITOR_URL` | `https://sixtec.com.br/monitores/saude` | Panel endpoint. |
+| `SIXTEC_MONITOR_URL` | `https://sixtec.com.br/monitor/health` | Panel endpoint. |
 | `SIXTEC_MONITOR_MODE` | `scheduler` | `service` or `scheduler` (written by `install`). |
 | `SIXTEC_MONITOR_INTERVAL` | `60` | Seconds between pushes (service). |
 | `SIXTEC_MONITOR_MAX_TIME` | `3600` | Seconds before the service renews itself. |

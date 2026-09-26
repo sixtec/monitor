@@ -29,7 +29,7 @@ class SendTest extends TestCase
 
         $this->artisan('sixtec:monitor:send')->expectsOutputToContain('Panel state: ok')->assertSuccessful();
 
-        Http::assertSent(fn (Request $request) => $request->url() === 'https://panel.test/monitores/saude'
+        Http::assertSent(fn (Request $request) => $request->url() === 'https://panel.test/monitor/health'
             && $request->hasHeader('Authorization', 'Bearer sxs_test-key')
             && $request['contract'] === 'sixtec.health/1'
             && str_starts_with($request->header('User-Agent')[0], 'sixtec-monitor/'));

@@ -21,7 +21,7 @@ return [
     |
     */
 
-    'url' => env('SIXTEC_MONITOR_URL', 'https://sixtec.com.br/monitores/saude'),
+    'url' => env('SIXTEC_MONITOR_URL', 'https://sixtec.com.br/monitor/health'),
 
     'key' => env('SIXTEC_MONITOR_KEY'),
 
