@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use Sixtec\Monitor\Contracts\Probe;
 use Sixtec\Monitor\MonitorServiceProvider;
 use Sixtec\Monitor\Result;
+use Throwable;
 
 /**
  * Scheduler (cron + schedule:run): the package records a heartbeat on every
@@ -16,7 +17,16 @@ class Scheduler implements Probe
 {
     public function check(): iterable
     {
-        $heartbeat = Cache::get(MonitorServiceProvider::HEARTBEAT_KEY);
+        try {
+            $heartbeat = Cache::get(MonitorServiceProvider::HEARTBEAT_KEY);
+        } catch (Throwable) {
+            // The heartbeat lives in the cache: with the cache down it cannot
+            // be read, which says nothing about the scheduler itself. The
+            // Cache probe already reports the outage.
+            yield Result::unknown('scheduler', 'Scheduler', 'Heartbeat unreadable: the cache is unavailable.');
+
+            return;
+        }
 
         if (! is_numeric($heartbeat)) {
             yield Result::unknown('scheduler', 'Scheduler', 'No heartbeat recorded yet (has schedule:run run?).');

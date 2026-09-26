@@ -91,6 +91,18 @@ class ReportTest extends TestCase
         $this->assertStringNotContainsString('secret', (string) json_encode($components));
     }
 
+    public function test_a_cache_outage_is_reported_once_not_by_every_probe_that_uses_the_cache(): void
+    {
+        config(['cache.default' => 'broken', 'cache.stores.broken' => ['driver' => 'redis', 'connection' => 'missing']]);
+
+        $components = $this->components();
+
+        $this->assertSame('critical', $components['cache']['status']);
+        $this->assertSame('unknown', $components['scheduler']['status']);
+        $this->assertSame('Heartbeat unreadable: the cache is unavailable.', $components['scheduler']['message']);
+        $this->assertSame('ok', $components['storage']['status']);
+    }
+
     public function test_storage_result_is_cached_between_runs(): void
     {
         $this->assertSame('ok', $this->components()['storage']['status']);

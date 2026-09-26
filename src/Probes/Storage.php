@@ -22,7 +22,13 @@ class Storage implements Probe
         $disk = (string) (config('sixtec-monitor.storage.disk') ?: config('filesystems.default'));
         $minutes = max(1, (int) config('sixtec-monitor.storage.every_minutes'));
 
-        $outcome = Cache::remember("sixtec-monitor:storage:{$disk}", now()->addMinutes($minutes), fn (): array => $this->test($disk));
+        try {
+            $outcome = Cache::remember("sixtec-monitor:storage:{$disk}", now()->addMinutes($minutes), fn (): array => $this->test($disk));
+        } catch (Throwable) {
+            // Cache down: test the disk directly instead of reporting the
+            // cache outage twice. The Cache probe already reports it.
+            $outcome = $this->test($disk);
+        }
 
         yield new Result('storage', "Storage ({$disk})", Status::from($outcome['status']), $outcome['message'], $outcome['latency_ms']);
     }
