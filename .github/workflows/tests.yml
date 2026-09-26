@@ -34,6 +34,13 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
 
+      # Every Laravel 11 release has open security advisories (fixes only
+      # ship in 12.x/13.x), so Composer refuses to install it. The package
+      # still supports apps on Laravel 11, so its tests run against it.
+      - name: Allow Laravel 11 despite advisories
+        if: matrix.laravel == '11.*'
+        run: composer config policy.advisories.block false
+
       - name: Install dependencies
         run: |
           composer require "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --dev --no-interaction --no-update
