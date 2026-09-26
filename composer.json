@@ -1,0 +1,58 @@
+{
+    "name": "sixtec/monitor",
+    "description": "Agente de monitoramento da Sixtec para apps Laravel: saúde da aplicação e do servidor, enviada ao painel de monitores por um serviço do systemd ou pelo agendador.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "monitoring",
+        "health",
+        "agent",
+        "systemd",
+        "sixtec"
+    ],
+    "authors": [
+        {
+            "name": "Sixtec",
+            "homepage": "https://sixtec.com.br"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/console": "^11.0|^12.0|^13.0",
+        "illuminate/http": "^11.0|^12.0|^13.0",
+        "illuminate/process": "^11.0|^12.0|^13.0",
+        "illuminate/support": "^11.0|^12.0|^13.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.18",
+        "orchestra/testbench": "^9.0|^10.0|^11.0",
+        "phpunit/phpunit": "^11.0|^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sixtec\\Monitor\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sixtec\\Monitor\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sixtec\\Monitor\\MonitorServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "format": "pint"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
